@@ -1,0 +1,39 @@
+# ========================================
+# Archivos de entorno y configuración
+# ========================================
+.env
+*.env
+.env.local
+.env.development
+.env.production
+
+# ========================================
+# Backend (FastAPI / Python)
+# ========================================
+venv/
+ENV/
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.log
+*.sqlite3
+*.db
+*.bak
+
+# ========================================
+# IDEs y configuraciones locales
+# ========================================
+.vscode/
+.idea/
+*.swp
+
+# ========================================
+# Frontend (Vite + TypeScript)
+# ========================================
+frontend_flightmanager/node_modules/
+frontend_flightmanager/dist/
+frontend_flightmanager/.vite/
+frontend_flightmanager/.cache/
+frontend_flightmanager/.eslintcache
+

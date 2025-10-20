@@ -1,0 +1,8 @@
+fastapi
+uvicorn[standard]
+sqlalchemy
+psycopg2-binary   # Driver de Python para PostgreSQL
+pydantic[email]   # Para validación y settings
+passlib[bcrypt]   # Para hashear contraseñas
+python-jose[cryptography] # Para crear y validar JWT
+python-dotenv     # Para leer el archivo .env
