@@ -1,5 +1,5 @@
 # Schemas para facilitar las importaciones
-from .user import User, UserBase, UserCreate
+from .user import User, UserBase, UserCreate, UserUpdate
 from .token import Token, TokenData
 from .flight import (
     Aeropuerto, AeropuertoBase,
@@ -29,7 +29,7 @@ from .billete import (
 
 __all__ = [
     # User
-    "User", "UserBase", "UserCreate",
+    "User", "UserBase", "UserCreate", "UserUpdate",
     # Token
     "Token", "TokenData",
     # Flight
