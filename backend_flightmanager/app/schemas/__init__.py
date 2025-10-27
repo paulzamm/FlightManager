@@ -1,5 +1,5 @@
 # Schemas para facilitar las importaciones
-from .user import User, UserBase, UserCreate, UserUpdate
+from .user import User, UserBase, UserCreate, UserUpdate, UserProfile, PasswordChange, AccountDeletion
 from .token import Token, TokenData
 from .flight import (
     Aeropuerto, AeropuertoBase,
@@ -7,29 +7,29 @@ from .flight import (
     FlightResult
 )
 from .asiento import (
-    Asiento, AsientoBase, AsientoCreate, 
-    AsientoUpdate, AsientoDisponible
+    AsientoBase, AsientoCreate, 
+    AsientoUpdate, AsientoDisponible, AsientoResponse
 )
 from .pasajero import (
-    Pasajero, PasajeroBase, PasajeroCreate,
-    PasajeroConAsiento
+    PasajeroBase, PasajeroCreate,
+    PasajeroResponse, PasajeroDetail
 )
 from .reserva import (
-    Reserva, ReservaBase, ReservaCreate,
-    ReservaUpdate, ReservaCompleta, ReservaListado
+    ReservaBase, ReservaCreate,
+    ReservaUpdate, ReservaResponse, ReservaDetail, ReservaSummary
 )
 from .tarjeta import (
-    TarjetaCredito, TarjetaCreditoBase, TarjetaCreditoCreate,
-    TarjetaCreditoUpdate, TarjetaCreditoSegura
+    TarjetaBase, TarjetaCreate,
+    TarjetaUpdate, TarjetaResponse, TarjetaSegura
 )
 from .billete import (
-    Billete, BilleteBase, BilleteCreate,
-    BilleteCompleto, BilleteConfirmacion
+    BilleteBase, BilleteCreate,
+    BilleteResponse, BilleteDetail, BilleteConfirmacion
 )
 
 __all__ = [
     # User
-    "User", "UserBase", "UserCreate", "UserUpdate",
+    "User", "UserBase", "UserCreate", "UserUpdate", "UserProfile", "PasswordChange", "AccountDeletion",
     # Token
     "Token", "TokenData",
     # Flight
@@ -37,18 +37,18 @@ __all__ = [
     "Aerolinea", "AerolineaBase",
     "FlightResult",
     # Asiento
-    "Asiento", "AsientoBase", "AsientoCreate",
-    "AsientoUpdate", "AsientoDisponible",
+    "AsientoBase", "AsientoCreate",
+    "AsientoUpdate", "AsientoDisponible", "AsientoResponse",
     # Pasajero
-    "Pasajero", "PasajeroBase", "PasajeroCreate",
-    "PasajeroConAsiento",
+    "PasajeroBase", "PasajeroCreate",
+    "PasajeroResponse", "PasajeroDetail",
     # Reserva
-    "Reserva", "ReservaBase", "ReservaCreate",
-    "ReservaUpdate", "ReservaCompleta", "ReservaListado",
+    "ReservaBase", "ReservaCreate",
+    "ReservaUpdate", "ReservaResponse", "ReservaDetail", "ReservaSummary",
     # Tarjeta
-    "TarjetaCredito", "TarjetaCreditoBase", "TarjetaCreditoCreate",
-    "TarjetaCreditoUpdate", "TarjetaCreditoSegura",
+    "TarjetaBase", "TarjetaCreate",
+    "TarjetaUpdate", "TarjetaResponse", "TarjetaSegura",
     # Billete
-    "Billete", "BilleteBase", "BilleteCreate",
-    "BilleteCompleto", "BilleteConfirmacion",
+    "BilleteBase", "BilleteCreate",
+    "BilleteResponse", "BilleteDetail", "BilleteConfirmacion",
 ]

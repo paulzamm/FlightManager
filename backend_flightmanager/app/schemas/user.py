@@ -24,3 +24,23 @@ class User(UserBase):
     
     # Configuración del modelo para permitir la conversión desde objetos ORM
     model_config = ConfigDict(from_attributes=True)
+
+# Esquema para perfil completo con estadísticas
+class UserProfile(BaseModel):
+    id: int
+    nombre_completo: str
+    email: EmailStr
+    fecha_creacion: datetime
+    estadisticas: dict
+    
+    model_config = ConfigDict(from_attributes=True)
+
+# Esquema para cambiar contraseña
+class PasswordChange(BaseModel):
+    current_password: str
+    new_password: str
+
+# Esquema para eliminar cuenta
+class AccountDeletion(BaseModel):
+    password: str
+    confirmar_eliminacion: bool = False

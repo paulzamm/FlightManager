@@ -1,10 +1,7 @@
 from pydantic import BaseModel, ConfigDict
-from typing import Optional, TYPE_CHECKING
+from typing import Optional
 from datetime import datetime
-
-if TYPE_CHECKING:
-    from .reserva import ReservaCompleta
-    from .tarjeta import TarjetaCreditoSegura
+from decimal import Decimal
 
 # Esquemas para Billete
 class BilleteBase(BaseModel):
@@ -12,21 +9,21 @@ class BilleteBase(BaseModel):
 
 class BilleteCreate(BaseModel):
     id_reserva: int
-    id_tarjeta_credito: int
-    codigo_confirmacion: str
+    id_tarjeta: int  # Cambiado de id_tarjeta_credito a id_tarjeta
 
-class Billete(BilleteBase):
+class BilleteResponse(BaseModel):
     id: int
     id_reserva: int
     id_tarjeta_credito: int
+    codigo_confirmacion: str
     fecha_compra: datetime
     
     model_config = ConfigDict(from_attributes=True)
 
-# Schema completo con información de reserva y tarjeta
-class BilleteCompleto(Billete):
-    reserva: Optional['ReservaCompleta'] = None
-    tarjeta_credito: Optional['TarjetaCreditoSegura'] = None
+# Schema con detalles completos
+class BilleteDetail(BilleteResponse):
+    reserva: Optional[dict] = None  # Incluye info de reserva
+    pasajeros: Optional[list] = None
     
     model_config = ConfigDict(from_attributes=True)
 
@@ -35,7 +32,7 @@ class BilleteConfirmacion(BaseModel):
     id: int
     codigo_confirmacion: str
     fecha_compra: datetime
-    monto_total: float
+    monto_total: Decimal
     mensaje: str = "Compra realizada exitosamente"
     
     model_config = ConfigDict(from_attributes=True)

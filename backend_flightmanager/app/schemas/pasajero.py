@@ -12,15 +12,17 @@ class PasajeroBase(BaseModel):
 class PasajeroCreate(PasajeroBase):
     id_asiento: int
 
-class Pasajero(PasajeroBase):
+class PasajeroResponse(BaseModel):
     id: int
     id_reserva: int
     id_asiento: int
+    nombre_completo: str
+    documento_identidad: Optional[str] = None
     
     model_config = ConfigDict(from_attributes=True)
 
 # Schema con información del asiento
-class PasajeroConAsiento(Pasajero):
-    asiento: Optional['AsientoDisponible'] = None
+class PasajeroDetail(PasajeroResponse):
+    asiento: Optional[dict] = None
     
     model_config = ConfigDict(from_attributes=True)

@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, VARCHAR, TIMESTAMP, ForeignKey, DECIMAL, Boolean, Enum
+from sqlalchemy import Column, Integer, String, VARCHAR, TIMESTAMP, ForeignKey, DECIMAL, Boolean, Enum, text
 from sqlalchemy.orm import relationship
 from .database import Base
 import enum
@@ -33,7 +33,7 @@ class Usuario(Base):
     nombre_completo = Column(VARCHAR(100), nullable=False)
     email = Column(VARCHAR(100), unique=True, index=True, nullable=False)
     password_hash = Column(VARCHAR(255), nullable=False)
-    fecha_creacion = Column(TIMESTAMP, server_default='CURRENT_TIMESTAMP')
+    fecha_creacion = Column(TIMESTAMP, server_default=text('CURRENT_TIMESTAMP'))
     
     # Relaciones
     reservas = relationship("Reserva", back_populates="usuario")
@@ -112,7 +112,7 @@ class Reserva(Base):
     
     id = Column(Integer, primary_key=True, index=True)
     id_usuario = Column(Integer, ForeignKey("Usuarios.id"), nullable=False)
-    fecha_reserva = Column(TIMESTAMP, server_default='CURRENT_TIMESTAMP')
+    fecha_reserva = Column(TIMESTAMP, server_default=text('CURRENT_TIMESTAMP'))
     estado = Column(Enum(EstadoReservaEnum), default=EstadoReservaEnum.Pendiente)
     monto_total = Column(DECIMAL(10, 2), nullable=False)
     
@@ -142,7 +142,7 @@ class Billete(Base):
     id = Column(Integer, primary_key=True, index=True)
     id_reserva = Column(Integer, ForeignKey("Reservas.id"), unique=True, nullable=False)
     id_tarjeta_credito = Column(Integer, ForeignKey("TarjetasCredito.id"), nullable=False)
-    fecha_compra = Column(TIMESTAMP, server_default='CURRENT_TIMESTAMP')
+    fecha_compra = Column(TIMESTAMP, server_default=text('CURRENT_TIMESTAMP'))
     codigo_confirmacion = Column(VARCHAR(20), unique=True, nullable=False)
     
     # Relaciones

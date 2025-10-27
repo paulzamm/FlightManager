@@ -2,7 +2,14 @@ from datetime import datetime, timedelta, timezone
 from typing import Optional
 from jose import JWTError, jwt
 from passlib.context import CryptContext
+from fastapi import Depends, HTTPException, status
+from fastapi.security import OAuth2PasswordBearer
+from sqlalchemy.orm import Session
+
 from app.core.config import settings
+
+# Configuración OAuth2
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/token")
 
 # Configuración de PassLib para hasheo
 pwd_context = CryptContext(schemes=['bcrypt'], deprecated="auto")
@@ -39,3 +46,38 @@ def verify_token(token: str, credentials_exception) -> str:
     except JWTError:
         raise credentials_exception
     return email
+
+# --- Dependencia de Usuario Actual ---
+def get_current_user(
+    token: str = Depends(oauth2_scheme),
+    db: Session = Depends(lambda: None)  # Placeholder, se obtiene manualmente
+):
+    """
+    Dependencia para obtener el usuario actual desde el token JWT.
+    Úsala en endpoints protegidos: current_user: Usuario = Depends(get_current_user)
+    """
+    from app.database.database import get_db
+    from app.crud import crud_user
+    
+    credentials_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="No se pudo validar las credenciales",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+    
+    email = verify_token(token, credentials_exception)
+    
+    # Obtener la sesión de base de datos manualmente
+    db_gen = get_db()
+    db = next(db_gen)
+    
+    try:
+        user = crud_user.get_user_by_email(db, email=email)
+        if user is None:
+            raise credentials_exception
+        return user
+    finally:
+        try:
+            db_gen.close()
+        except:
+            pass

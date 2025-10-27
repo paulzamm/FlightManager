@@ -3,11 +3,10 @@ from typing import Optional
 import re
 
 # Esquemas para TarjetaCredito
-class TarjetaCreditoBase(BaseModel):
+class TarjetaBase(BaseModel):
     numero_tarjeta: str  # En producción debe ser tokenizado
     fecha_expiracion: str  # Formato: MM/YY
     nombre_titular: str
-    es_predeterminada: bool = False
     
     @field_validator('fecha_expiracion')
     @classmethod
@@ -26,13 +25,14 @@ class TarjetaCreditoBase(BaseModel):
             raise ValueError('Número de tarjeta inválido')
         return numero
 
-class TarjetaCreditoCreate(TarjetaCreditoBase):
-    id_usuario: int
+class TarjetaCreate(TarjetaBase):
+    pass
 
-class TarjetaCreditoUpdate(BaseModel):
-    es_predeterminada: Optional[bool] = None
+class TarjetaUpdate(BaseModel):
+    fecha_expiracion: Optional[str] = None
+    nombre_titular: Optional[str] = None
     
-class TarjetaCredito(BaseModel):
+class TarjetaResponse(BaseModel):
     id: int
     id_usuario: int
     numero_tarjeta: str
@@ -43,19 +43,11 @@ class TarjetaCredito(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 # Schema seguro que oculta el número completo
-class TarjetaCreditoSegura(BaseModel):
+class TarjetaSegura(BaseModel):
     id: int
     ultimos_4_digitos: str
     fecha_expiracion: str
     nombre_titular: str
     es_predeterminada: bool
     
-    @classmethod
-    def from_tarjeta(cls, tarjeta: TarjetaCredito):
-        return cls(
-            id=tarjeta.id,
-            ultimos_4_digitos=tarjeta.numero_tarjeta[-4:],
-            fecha_expiracion=tarjeta.fecha_expiracion,
-            nombre_titular=tarjeta.nombre_titular,
-            es_predeterminada=tarjeta.es_predeterminada
-        )
+    model_config = ConfigDict(from_attributes=True)

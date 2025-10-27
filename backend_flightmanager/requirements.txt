@@ -1,9 +1,25 @@
-fastapi
-uvicorn[standard]
-sqlalchemy
-psycopg2-binary   # Driver de Python para PostgreSQL
-pydantic[email]   # Para validación y settings
-pydantic-settings # Requerido para Pydantic v2 Settings
-passlib[bcrypt]   # Para hashear contraseñas
-python-jose[cryptography] # Para crear y validar JWT
-python-dotenv     # Para leer el archivo .env
+# FastAPI Framework
+fastapi==0.115.5
+uvicorn[standard]==0.32.1
+
+# Database
+sqlalchemy==2.0.36
+psycopg2-binary==2.9.10
+
+# Data Validation
+pydantic[email]==2.10.3
+pydantic-settings==2.6.1
+
+# Security & Authentication
+passlib[bcrypt]==1.7.4
+python-jose[cryptography]==3.3.0
+bcrypt==4.2.1
+
+# File Upload & Forms
+python-multipart==0.0.20
+
+# Environment Variables
+python-dotenv==1.0.1
+
+# Utilities
+python-dateutil==2.9.0.post0

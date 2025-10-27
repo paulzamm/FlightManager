@@ -30,3 +30,6 @@ class AsientoDisponible(BaseModel):
     estado: str
     
     model_config = ConfigDict(from_attributes=True)
+
+# Alias para compatibilidad con endpoints
+AsientoResponse = AsientoDisponible

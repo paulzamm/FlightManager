@@ -2,7 +2,7 @@ from sqlalchemy.orm import Session
 from typing import Optional, List
 from app.database import Usuario
 from app.schemas import UserCreate, UserUpdate
-from app.core import get_password_hash
+from app.core.security import get_password_hash
 
 # --- CREATE ---
 def create_user(db: Session, user: UserCreate) -> Usuario:
