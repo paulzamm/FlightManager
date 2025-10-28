@@ -42,7 +42,9 @@ def register_credit_card(
         nueva_tarjeta = crud_tarjeta.create_tarjeta(
             db,
             user_id=current_user.id,
-            tarjeta_data=tarjeta_data
+            numero_tarjeta=tarjeta_data.numero_tarjeta,
+            fecha_expiracion=tarjeta_data.fecha_expiracion,
+            nombre_titular=tarjeta_data.nombre_titular
         )
         
         return nueva_tarjeta

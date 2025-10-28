@@ -22,8 +22,9 @@ class BilleteResponse(BaseModel):
 
 # Schema con detalles completos
 class BilleteDetail(BilleteResponse):
-    reserva: Optional[dict] = None  # Incluye info de reserva
-    pasajeros: Optional[list] = None
+    # Hereda todos los campos de BilleteResponse
+    # Si necesitas incluir relaciones, el frontend puede hacer llamadas separadas
+    # usando id_reserva e id_tarjeta_credito
     
     model_config = ConfigDict(from_attributes=True)
 

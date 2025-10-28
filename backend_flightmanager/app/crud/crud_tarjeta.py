@@ -77,6 +77,10 @@ def update_tarjeta(db: Session, tarjeta_id: int, tarjeta_data: dict) -> Optional
     if not tarjeta:
         return None
     
+    # Convertir Pydantic model a dict si es necesario
+    if not isinstance(tarjeta_data, dict):
+        tarjeta_data = tarjeta_data.model_dump(exclude_unset=True)
+    
     # Si se cambia a predeterminada, desmarcar las demás
     if tarjeta_data.get('es_predeterminada') == True:
         _unset_default_tarjetas(db, tarjeta.id_usuario)

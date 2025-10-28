@@ -132,9 +132,7 @@ def get_reservation_details(
             detail="No tienes permiso para ver esta reserva"
         )
     
-    # Obtener resumen completo
-    resumen = crud_reserva.get_reserva_summary(db, reserva_id)
-    return resumen
+    return reserva
 
 # --- MODIFICAR RESERVA ---
 
@@ -222,6 +220,21 @@ def change_passenger_seat(
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Solo se pueden cambiar asientos en reservas Pendientes"
+        )
+    
+    # Verificar que el pasajero pertenece a esta reserva
+    pasajero = crud_pasajero.get_pasajero_by_id(db, pasajero_id)
+    
+    if not pasajero:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Pasajero con ID {pasajero_id} no encontrado"
+        )
+    
+    if pasajero.id_reserva != reserva_id:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"El pasajero {pasajero_id} no pertenece a la reserva {reserva_id}"
         )
     
     # Verificar que el nuevo asiento está disponible

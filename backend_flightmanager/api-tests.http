@@ -4,7 +4,7 @@
 ### ========================================
 
 @baseUrl = http://localhost:8000
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqdWFuLnBlcmV6QGV4YW1wbGUuY29tIiwiZXhwIjoxNzYxNTg5MzQzfQ.Tjf_0NcLTGt1dLWE0Pll4gxYlZACpDPHSJReGnucS7E
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqdWFuLnBlcmV6QGV4YW1wbGUuY29tIiwiZXhwIjoxNzYxNjI3NDgyfQ.J17LpBoCK_dwNGqh3mahMnHlNNaNwt8XknIRRRGmmPY
 
 ### ========================================
 ### 📋 FLUJO COMPLETO RECOMENDADO
@@ -78,7 +78,7 @@ GET {{baseUrl}}/flights/search/advanced?origen=UIO&destino=LIM&fecha=2025-10-31&
 
 ### 2.4 Ver Asientos del Vuelo (usa un ID real de los resultados anteriores)
 # Primero ejecuta 2.1 y copia un ID de vuelo de la respuesta
-GET {{baseUrl}}/flights/20/seats?categoria=Economica
+GET {{baseUrl}}/flights/1/seats?categoria=Economica
 
 ### 2.4b Ver Asientos Business Class
 GET {{baseUrl}}/flights/1/seats?categoria=Business
@@ -103,7 +103,7 @@ Authorization: Bearer {{token}}
     {
       "nombre_completo": "Juan Pérez García",
       "documento_identidad": "1234567890",
-      "id_asiento": 7
+      "id_asiento": 55
     }
   ]
 }
@@ -118,12 +118,12 @@ Authorization: Bearer {{token}}
     {
       "nombre_completo": "María García López",
       "documento_identidad": "0987654321",
-      "id_asiento": 8
+      "id_asiento": 57
     },
     {
       "nombre_completo": "Carlos García Pérez",
       "documento_identidad": "1122334455",
-      "id_asiento": 9
+      "id_asiento": 59
     }
   ]
 }
@@ -153,7 +153,7 @@ Authorization: Bearer {{token}}
 {
   "id_reserva": 1,
   "id_pasajero": 1,
-  "nuevo_id_asiento": 10
+  "nuevo_id_asiento": 56
 }
 
 ### 3.5 Cancelar Reserva (usa ID real)
@@ -176,9 +176,8 @@ Authorization: Bearer {{token}}
 
 {
   "numero_tarjeta": "4532015112830366",
-  "fecha_expiracion": "12/2027",
-  "nombre_titular": "Juan Perez",
-  "cvv": "123"
+  "fecha_expiracion": "12/27",
+  "nombre_titular": "Juan Perez"
 }
 
 ### 4.1b Registrar Tarjeta Mastercard
@@ -188,9 +187,8 @@ Authorization: Bearer {{token}}
 
 {
   "numero_tarjeta": "5425233430109903",
-  "fecha_expiracion": "09/2026",
+  "fecha_expiracion": "09/26",
   "nombre_titular": "Juan Perez",
-  "cvv": "789"
 }
 
 ### 4.2 Ver Mis Tarjetas (solo últimos 4 dígitos visibles)

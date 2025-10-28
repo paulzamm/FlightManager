@@ -175,10 +175,8 @@ def get_ticket_details(
             detail="Este billete no te pertenece"
         )
     
-    # Obtener detalles completos
-    detalles = crud_billete.get_billete_details(db, billete_id)
-    
-    return detalles
+    # Retornar el billete completo
+    return billete
 
 # --- SIMULACIÓN DE ENVÍO POR EMAIL ---
 
@@ -232,7 +230,7 @@ def get_pickup_information(
     """
     Obtiene información para recoger el billete en el mostrador del aeropuerto.
     
-    Según los requisitos: "Los billetes estarán listos para ser recogidos 
+    Requisitos: "Los billetes estarán listos para ser recogidos 
     en el mostrador del aeropuerto antes de la salida del primer vuelo."
     
     **Requiere autenticación JWT.**

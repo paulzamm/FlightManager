@@ -149,9 +149,9 @@ def get_billete_confirmacion(db: Session, codigo: str) -> Optional[dict]:
         return None
     
     return {
-        "codigo": billete.codigo_confirmacion,
-        "fecha": billete.fecha_compra,
-        "monto": float(billete.reserva.monto_total),
-        "mensaje": "Compra realizada exitosamente",
-        "estado": "Confirmado"
+        "id": billete.id,
+        "codigo_confirmacion": billete.codigo_confirmacion,
+        "fecha_compra": billete.fecha_compra,
+        "monto_total": billete.reserva.monto_total,
+        "mensaje": "Compra realizada exitosamente"
     }

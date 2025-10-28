@@ -29,10 +29,11 @@ def get_reservas_by_user(db: Session, user_id: int, skip: int = 0, limit: int = 
         .limit(limit)\
         .all()
 
-def get_reservas_by_estado(db: Session, estado: EstadoReservaEnum, skip: int = 0, limit: int = 100) -> List[Reserva]:
-    """Obtiene reservas filtradas por estado."""
+def get_reservas_by_estado(db: Session, user_id: int, estado: EstadoReservaEnum, skip: int = 0, limit: int = 100) -> List[Reserva]:
+    """Obtiene reservas filtradas por estado para un usuario específico."""
     return db.query(Reserva)\
-        .options(joinedload(Reserva.usuario))\
+        .options(joinedload(Reserva.pasajeros).joinedload(Pasajero.asiento))\
+        .filter(Reserva.id_usuario == user_id)\
         .filter(Reserva.estado == estado)\
         .order_by(Reserva.fecha_reserva.desc())\
         .offset(skip)\
