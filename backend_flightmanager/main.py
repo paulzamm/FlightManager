@@ -64,7 +64,7 @@ app = FastAPI(
 # Configurar CORS para permitir peticiones desde el frontend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # En producción: especificar dominio del frontend
+    allow_origins=["*"],  # Permitir todas las fuentes
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -112,9 +112,6 @@ app.include_router(
 def read_root():
     """
     Mensaje de bienvenida del sistema.
-    
-    **REQUISITO DEL DOCUMENTO:** Terminal de Servicio de Reserva 
-    con mensaje de bienvenida describiendo los servicios ofrecidos.
     """
     return {
         "message": "Bienvenido al Sistema de Reserva de Vuelos",

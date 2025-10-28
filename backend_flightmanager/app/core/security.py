@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta, timezone
 from typing import Optional
 from jose import JWTError, jwt
-from passlib.context import CryptContext
+import bcrypt
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
@@ -11,17 +11,22 @@ from app.core.config import settings
 # Configuración OAuth2
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/token")
 
-# Configuración de PassLib para hasheo
-pwd_context = CryptContext(schemes=['bcrypt'], deprecated="auto")
-
 # --- Funciones de Contraseña ---
 def verify_password(plain_password: str, hashed_password: str) -> bool:
     """Verifica si la contraseña plana coincide con el hash."""
-    return pwd_context.verify(plain_password, hashed_password)
+    # Convertir strings a bytes para bcrypt
+    password_bytes = plain_password.encode('utf-8')
+    hashed_bytes = hashed_password.encode('utf-8')
+    return bcrypt.checkpw(password_bytes, hashed_bytes)
 
 def get_password_hash(password: str) -> str:
-    """Genera un hash de la contraseña."""
-    return pwd_context.hash(password)
+    """Genera un hash de la contraseña usando bcrypt."""
+    # Convertir password a bytes y generar salt
+    password_bytes = password.encode('utf-8')
+    salt = bcrypt.gensalt()
+    hashed = bcrypt.hashpw(password_bytes, salt)
+    # Retornar como string
+    return hashed.decode('utf-8')
 
 # --- Funciones de JWT ---
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -> str:

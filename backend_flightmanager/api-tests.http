@@ -1,0 +1,290 @@
+### ========================================
+### Flight Manager API - REST Client
+### Extensión: REST Client for VS Code
+### ========================================
+
+@baseUrl = http://localhost:8000
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqdWFuLnBlcmV6QGV4YW1wbGUuY29tIiwiZXhwIjoxNzYxNTg5MzQzfQ.Tjf_0NcLTGt1dLWE0Pll4gxYlZACpDPHSJReGnucS7E
+
+### ========================================
+### 📋 FLUJO COMPLETO RECOMENDADO
+### ========================================
+### 1. Login (1.2) → Copiar token
+### 2. Buscar Vuelos (2.1) → Anotar ID de vuelo
+### 3. Ver Asientos (2.4) → Anotar IDs DISPONIBLES
+### 4. Registrar Tarjeta (4.1) → Anotar ID de tarjeta
+### 5. Crear Reserva (3.1) → Usar IDs de asientos
+### 6. Comprar Billete (5.1) → Usar IDs de reserva y tarjeta
+### 7. Ver Mis Billetes (5.3) → Verificar compra
+### ========================================
+
+### ========================================
+### 1. AUTENTICACIÓN
+### ========================================
+
+### 1.1 Registrar Usuario
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "nombre_completo": "Test Usuario",
+  "email": "test@example.com",
+  "password": "password123"
+}
+
+### 1.2 Login (Obtener Token)
+# @name login
+POST {{baseUrl}}/auth/token
+Content-Type: application/x-www-form-urlencoded
+
+username=juan.perez@example.com&password=password123
+
+### 1.3 Ver Mi Perfil
+GET {{baseUrl}}/auth/me
+Authorization: Bearer {{token}}
+
+
+### ========================================
+### 2. VUELOS
+### ========================================
+
+### 2.1 Buscar Vuelos por Ruta (UIO → GYE, mañana)
+# Vuelos disponibles: LA2451 (06:00), LA2489 (en +2 días)
+GET {{baseUrl}}/flights/search?origen=UIO&destino=GYE&fecha=2025-10-28
+
+### 2.1b Buscar Vuelos por Ruta (GYE → UIO, mañana)
+GET {{baseUrl}}/flights/search?origen=GYE&destino=UIO&fecha=2025-10-28
+
+### 2.1c Buscar Vuelos por Ruta (UIO → CUE, en 2 días)
+GET {{baseUrl}}/flights/search?origen=UIO&destino=CUE&fecha=2025-10-29
+
+### 2.1d Buscar Vuelos por Ruta (GYE → MCH, mañana)
+GET {{baseUrl}}/flights/search?origen=GYE&destino=MCH&fecha=2025-10-28
+
+### 2.2 Buscar Vuelos por Precio (UIO → GYE)
+GET {{baseUrl}}/flights/search/by-price?origen=UIO&destino=GYE&fecha=2025-10-28
+
+### 2.2b Buscar Vuelos por Precio (UIO → BOG)
+GET {{baseUrl}}/flights/search/by-price?origen=UIO&destino=BOG&fecha=2025-10-29
+
+### 2.3 Búsqueda Avanzada (UIO → GYE, ordenar por precio)
+GET {{baseUrl}}/flights/search/advanced?origen=UIO&destino=GYE&fecha=2025-10-28&ordenar_por=precio
+
+### 2.3b Búsqueda Avanzada (UIO → cualquiera, LATAM Airlines)
+GET {{baseUrl}}/flights/search/advanced?origen=UIO&destino=GYE&fecha=2025-10-28&aerolinea=LA&ordenar_por=precio
+
+### 2.3c Búsqueda Avanzada (UIO → LIM, ordenar por horario)
+GET {{baseUrl}}/flights/search/advanced?origen=UIO&destino=LIM&fecha=2025-10-31&ordenar_por=horario
+
+### 2.4 Ver Asientos del Vuelo (usa un ID real de los resultados anteriores)
+# Primero ejecuta 2.1 y copia un ID de vuelo de la respuesta
+GET {{baseUrl}}/flights/20/seats?categoria=Economica
+
+### 2.4b Ver Asientos Business Class
+GET {{baseUrl}}/flights/1/seats?categoria=Business
+
+### 2.4c Ver TODOS los Asientos (sin filtro)
+GET {{baseUrl}}/flights/1/seats
+
+
+### ========================================
+### 3. RESERVAS
+### ========================================
+
+### 3.1 Crear Reserva (1 pasajero, 1 asiento)
+# IMPORTANTE: Primero ejecuta 2.4 para obtener IDs de asientos DISPONIBLES
+# Copia IDs de asientos con "estado": "Disponible"
+POST {{baseUrl}}/reservas
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "pasajeros": [
+    {
+      "nombre_completo": "Juan Pérez García",
+      "documento_identidad": "1234567890",
+      "id_asiento": 7
+    }
+  ]
+}
+
+### 3.1b Crear Reserva (2 pasajeros, 2 asientos)
+POST {{baseUrl}}/reservas
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "pasajeros": [
+    {
+      "nombre_completo": "María García López",
+      "documento_identidad": "0987654321",
+      "id_asiento": 8
+    },
+    {
+      "nombre_completo": "Carlos García Pérez",
+      "documento_identidad": "1122334455",
+      "id_asiento": 9
+    }
+  ]
+}
+
+### 3.2 Ver Mis Reservas (todas)
+GET {{baseUrl}}/reservas/me
+Authorization: Bearer {{token}}
+
+### 3.2b Ver Solo Reservas Pendientes
+GET {{baseUrl}}/reservas/me?estado=Pendiente
+Authorization: Bearer {{token}}
+
+### 3.2c Ver Solo Reservas Confirmadas
+GET {{baseUrl}}/reservas/me?estado=Confirmada
+Authorization: Bearer {{token}}
+
+### 3.3 Ver Detalle de Reserva (usa ID real de 3.2)
+GET {{baseUrl}}/reservas/1
+Authorization: Bearer {{token}}
+
+### 3.4 Cambiar Asiento (usa IDs reales de 3.3)
+# Primero obtén IDs de: reserva, pasajero, y nuevo asiento disponible
+PUT {{baseUrl}}/reservas/change-seat
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "id_reserva": 1,
+  "id_pasajero": 1,
+  "nuevo_id_asiento": 10
+}
+
+### 3.5 Cancelar Reserva (usa ID real)
+PATCH {{baseUrl}}/reservas/1/cancel
+Authorization: Bearer {{token}}
+
+### 3.6 Contar Mis Reservas
+GET {{baseUrl}}/reservas/me/count
+Authorization: Bearer {{token}}
+
+
+### ========================================
+### 4. TARJETAS DE CRÉDITO
+### ========================================
+
+### 4.1 Registrar Tarjeta Visa
+POST {{baseUrl}}/tarjetas
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "numero_tarjeta": "4532015112830366",
+  "fecha_expiracion": "12/2027",
+  "nombre_titular": "Juan Perez",
+  "cvv": "123"
+}
+
+### 4.1b Registrar Tarjeta Mastercard
+POST {{baseUrl}}/tarjetas
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "numero_tarjeta": "5425233430109903",
+  "fecha_expiracion": "09/2026",
+  "nombre_titular": "Juan Perez",
+  "cvv": "789"
+}
+
+### 4.2 Ver Mis Tarjetas (solo últimos 4 dígitos visibles)
+GET {{baseUrl}}/tarjetas/me
+Authorization: Bearer {{token}}
+
+### 4.3 Establecer Tarjeta Predeterminada (usa ID real de 4.2)
+PATCH {{baseUrl}}/tarjetas/1/set-default
+Authorization: Bearer {{token}}
+
+### 4.4 Eliminar Tarjeta (usa ID real de 4.2)
+DELETE {{baseUrl}}/tarjetas/2
+Authorization: Bearer {{token}}
+
+
+### ========================================
+### 5. BILLETES (FLUJO COMPLETO DE COMPRA)
+### ========================================
+
+### 5.1 Comprar Billete (usa IDs reales)
+# Necesitas: 1) Una reserva PENDIENTE (de 3.2), 2) Una tarjeta (de 4.2)
+POST {{baseUrl}}/billetes/purchase
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "id_reserva": 1,
+  "id_tarjeta_credito": 1
+}
+
+### 5.2 Ver por Código Confirmación (usa código de 5.1)
+# Copia el "codigo_confirmacion" de la respuesta de 5.1
+GET {{baseUrl}}/billetes/confirmation/ABC123XYZ
+Authorization: Bearer {{token}}
+
+### 5.3 Ver Mis Billetes (todos los comprados)
+GET {{baseUrl}}/billetes/me
+Authorization: Bearer {{token}}
+
+### 5.4 Enviar Billete por Email (usa ID real de 5.3)
+POST {{baseUrl}}/billetes/1/send-email?email_destino=mi-email@example.com
+Authorization: Bearer {{token}}
+
+### 5.5 Ver Info Check-in (usa ID real de 5.3)
+GET {{baseUrl}}/billetes/1/pickup-info
+Authorization: Bearer {{token}}
+
+### 5.6 Contar Mis Billetes
+GET {{baseUrl}}/billetes/me/count
+Authorization: Bearer {{token}}
+
+
+### ========================================
+### 6. GESTIÓN DE USUARIO
+### ========================================
+
+### 6.1 Ver Perfil Completo
+GET {{baseUrl}}/users/me/profile
+Authorization: Bearer {{token}}
+
+### 6.2 Actualizar Perfil
+PUT {{baseUrl}}/users/me
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "nombre_completo": "Juan Carlos Pérez García",
+  "email": "juan.perez.nuevo@example.com"
+}
+
+### 6.3 Cambiar Contraseña
+PATCH {{baseUrl}}/users/me/change-password
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "password_actual": "password123",
+  "password_nueva": "nuevaPassword456"
+}
+
+### 6.4 Eliminar Cuenta (CUIDADO)
+DELETE {{baseUrl}}/users/me
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "confirmacion": "ELIMINAR",
+  "password": "password123"
+}
+
+
+### ========================================
+### OTROS USUARIOS DE PRUEBA
+### ========================================
+### admin@flightmanager.com / admin123
+### maria.garcia@example.com / password123
+### carlos.lopez@example.com / password123
