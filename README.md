@@ -156,7 +156,7 @@ npm install
 Crea un archivo `.env` en la carpeta `frontend_flightmanager/`:
 
 ```env
-VITE_API_URL=http://localhost:8000
+VITE_API_BASE_URL=http://localhost:8000
 ```
 
 ### 3.4 Iniciar el servidor de desarrollo
