@@ -58,10 +58,42 @@ export const initProfile = async (params: any, title: string) => {
         ProfileView.bindChangePassword(handleChangePassword);
         ProfileView.bindAddCard(handleAddCard);
         ProfileView.bindDeleteCard(handleDeleteCard);
+        
+        // Formateo automático del campo de expiración
+        setupCardExpirationFormatting();
+        // Validación de solo números en tarjeta
+        setupCardNumberValidation();
 
     } catch (error: any) {
         LayoutView.renderPageContent('Error', `<p class="text-red-500">${error.message}</p>`);
     }
+};
+
+// Helper para formatear automáticamente MM/YY
+const setupCardExpirationFormatting = () => {
+    const expInput = document.getElementById('card-exp-new') as HTMLInputElement;
+    if (!expInput) return;
+    
+    expInput.addEventListener('input', (e) => {
+        let value = (e.target as HTMLInputElement).value.replace(/\D/g, ''); // Solo números
+        
+        if (value.length >= 2) {
+            value = value.substring(0, 2) + '/' + value.substring(2, 4);
+        }
+        
+        (e.target as HTMLInputElement).value = value;
+    });
+};
+
+// Helper para validar solo números en el campo de tarjeta
+const setupCardNumberValidation = () => {
+    const cardInput = document.getElementById('card-num-new') as HTMLInputElement;
+    if (!cardInput) return;
+    
+    cardInput.addEventListener('input', (e) => {
+        let value = (e.target as HTMLInputElement).value.replace(/\D/g, ''); // Solo números
+        (e.target as HTMLInputElement).value = value;
+    });
 };
 
 const handleUpdateProfile = async (e: SubmitEvent) => {

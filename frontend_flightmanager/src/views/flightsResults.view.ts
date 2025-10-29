@@ -106,7 +106,7 @@ export const FlightResultsView = {
         const colorEstado = asientosDisponibles > 10 ? 'text-green-600' : asientosDisponibles > 0 ? 'text-yellow-600' : 'text-red-600';
 
         return `
-        <div class="bg-white border-2 rounded-lg shadow-md hover:shadow-lg transition-shadow p-4">
+        <div class="bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-200 p-6">
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-4 md:space-y-0">
                 
                 <!-- Información de la aerolínea -->

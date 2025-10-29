@@ -5,67 +5,96 @@ export const PaymentView = {
         return `
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             
-            <div class="md:col-span-2 bg-white p-6 rounded-lg shadow-lg">
-            <h2 class="text-2xl font-bold text-gray-800 mb-6">Realizar Pago</h2>
+            <div class="md:col-span-2 bg-white p-8 rounded-xl shadow-2xl border border-gray-200">
+            <h2 class="text-3xl font-bold text-gray-900 mb-2">Realizar Pago</h2>
+            <p class="text-gray-600 text-sm mb-6">Selecciona o añade un método de pago</p>
             
-            <div id="payment-message" class="text-center mb-4"></div>
+            <div id="payment-message" class="text-center mb-4 font-semibold"></div>
             
             <div id="saved-cards-section">
-                <h3 class="text-lg font-semibold mb-3">Tus Tarjetas Guardadas</h3>
+                <h3 class="text-xl font-semibold text-gray-800 mb-4">Tus Tarjetas Guardadas</h3>
                 ${tarjetas.length > 0 ? `
                 <div class="space-y-3">
                     ${tarjetas.map(t => `
-                    <label class="flex items-center p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
-                        <input type="radio" name="tarjeta_id" value="${t.id}" class="mr-3" ${t.es_predeterminada ? 'checked' : ''}>
-                        <span class="font-mono">**** **** **** ${t.ultimos_4_digitos}</span>
-                        <span class="ml-auto text-sm text-gray-600">${t.nombre_titular} (${t.fecha_expiracion})</span>
+                    <label class="flex items-center p-4 border-2 border-gray-300 rounded-xl hover:bg-gradient-to-r hover:from-indigo-50 hover:to-purple-50 hover:border-indigo-400 cursor-pointer transition-all duration-200 shadow-sm">
+                        <input type="radio" name="tarjeta_id" value="${t.id}" class="mr-4 w-5 h-5 text-indigo-600" ${t.es_predeterminada ? 'checked' : ''}>
+                        <div class="flex-1">
+                            <span class="font-mono font-bold text-gray-800">**** **** **** ${t.ultimos_4_digitos}</span>
+                            <div class="text-sm text-gray-600 mt-1">${t.nombre_titular} • Exp: ${t.fecha_expiracion}</div>
+                        </div>
+                        ${t.es_predeterminada ? '<span class="text-xs bg-green-100 text-green-800 px-3 py-1 rounded-full font-semibold">Predeterminada</span>' : ''}
                     </label>
                     `).join('')}
                 </div>
                 ` : `
-                <p class="text-gray-500">No tienes tarjetas guardadas. Añade una nueva.</p>
+                <p class="text-gray-500 bg-gray-50 p-4 rounded-lg border-2 border-dashed border-gray-300">No tienes tarjetas guardadas. Añade una nueva.</p>
                 `}
-                <button id="btn-toggle-new-card" class="text-indigo-600 hover:text-indigo-800 text-sm mt-4">
+                <button id="btn-toggle-new-card" class="text-indigo-600 hover:text-indigo-800 font-semibold text-base mt-4 transition-colors">
                 + Añadir nueva tarjeta
                 </button>
             </div>
             
-            <form id="new-card-form" class="mt-6 border-t pt-6 ${tarjetas.length > 0 ? 'hidden' : ''}">
-                <h3 class="text-lg font-semibold mb-3">Añadir Nueva Tarjeta</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <form id="new-card-form" class="mt-6 border-t-2 border-gray-200 pt-6 ${tarjetas.length > 0 ? 'hidden' : ''}">
+                <h3 class="text-xl font-semibold text-gray-800 mb-4">Añadir Nueva Tarjeta</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                    <label class="block text-sm font-medium text-gray-700" for="card-name">Nombre en la Tarjeta</label>
-                    <input type="text" id="card-name" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" required>
+                    <label class="block text-sm font-semibold text-gray-800 mb-2" for="card-name">Nombre en la Tarjeta</label>
+                    <input type="text" id="card-name" 
+                           class="block w-full px-4 py-3 text-base border-2 border-gray-300 rounded-lg shadow-sm 
+                                  bg-white placeholder-gray-400 
+                                  focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 
+                                  hover:border-indigo-300 transition-all duration-200"
+                           placeholder="Ej: Juan Pérez" required>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-700" for="card-number">Número de Tarjeta</label>
-                    <input type="text" id="card-number" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" placeholder="**** **** **** ****" required>
+                    <label class="block text-sm font-semibold text-gray-800 mb-2" for="card-number">Número de Tarjeta</label>
+                    <input type="text" id="card-number" 
+                           class="block w-full px-4 py-3 text-base border-2 border-gray-300 rounded-lg shadow-sm 
+                                  bg-white placeholder-gray-400 font-mono
+                                  focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 
+                                  hover:border-indigo-300 transition-all duration-200" 
+                           placeholder="**** **** **** ****" required>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-700" for="card-exp">Expiración (MM/YY)</label>
-                    <input type="text" id="card-exp" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" placeholder="MM/YY" required>
+                    <label class="block text-sm font-semibold text-gray-800 mb-2" for="card-exp">Expiración (MM/YY)</label>
+                    <input type="text" id="card-exp" 
+                           class="block w-full px-4 py-3 text-base border-2 border-gray-300 rounded-lg shadow-sm 
+                                  bg-white placeholder-gray-400 font-mono
+                                  focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 
+                                  hover:border-indigo-300 transition-all duration-200" 
+                           placeholder="MM/YY" required>
                 </div>
                 </div>
-                <button type="submit" id="btn-save-card" class="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">
+                <button type="submit" id="btn-save-card" 
+                        class="mt-6 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 
+                               text-white font-bold py-3 px-6 rounded-xl 
+                               shadow-lg hover:shadow-xl transform hover:scale-[1.02] 
+                               transition-all duration-200 
+                               focus:outline-none focus:ring-4 focus:ring-blue-300">
                 Guardar y Usar esta Tarjeta
                 </button>
             </form>
             </div>
             
-            <div class="md:col-span-1 bg-gray-50 p-6 rounded-lg shadow-inner">
-            <h3 class="text-xl font-bold mb-4 border-b pb-2">Resumen de Compra</h3>
-            <p class="flex justify-between"><span>Reserva ID:</span> <span class="font-semibold">#${reserva.id}</span></p>
-            <p class="flex justify-between"><span>Pasajeros:</span> <span class="font-semibold">${reserva.pasajeros.length}</span></p>
-            <p class="flex justify-between mb-4"><span>Estado:</span> <span class="font-semibold text-yellow-600">${reserva.estado}</span></p>
-            
-            <div class="border-t border-b py-4 my-4">
-                <p class="text-2xl font-bold flex justify-between">
-                <span>Total a Pagar:</span>
-                <span class="text-green-600">$${Number(reserva.monto_total).toFixed(2)}</span>
-                </p>
+            <div class="md:col-span-1 bg-gradient-to-br from-gray-50 to-gray-100 p-8 rounded-xl shadow-2xl border border-gray-200">
+            <h3 class="text-2xl font-bold mb-6 text-gray-900 border-b-2 border-gray-300 pb-3">Resumen de Compra</h3>
+            <div class="space-y-3 mb-6">
+                <p class="flex justify-between text-base"><span class="text-gray-700">Reserva ID:</span> <span class="font-bold text-gray-900">#${reserva.id}</span></p>
+                <p class="flex justify-between text-base"><span class="text-gray-700">Pasajeros:</span> <span class="font-bold text-gray-900">${reserva.pasajeros.length}</span></p>
+                <p class="flex justify-between text-base"><span class="text-gray-700">Estado:</span> <span class="font-bold text-yellow-600">${reserva.estado}</span></p>
             </div>
             
-            <button id="btn-confirm-purchase" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg text-lg">
+            <div class="border-t-2 border-b-2 border-gray-300 py-6 my-6 bg-white rounded-lg px-4">
+                <p class="text-gray-700 text-base mb-2">Total a Pagar:</p>
+                <p class="text-4xl font-bold text-green-600">$${Number(reserva.monto_total).toFixed(2)}</p>
+            </div>
+            
+            <button id="btn-confirm-purchase" 
+                    class="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 
+                           text-white font-bold py-4 px-8 rounded-xl text-lg 
+                           shadow-lg hover:shadow-xl transform hover:scale-[1.02] 
+                           transition-all duration-200 
+                           focus:outline-none focus:ring-4 focus:ring-green-300">
                 Comprar Ahora
             </button>
             </div>

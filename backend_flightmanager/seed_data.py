@@ -397,15 +397,25 @@ def seed_asientos(db: Session, vuelos: list):
             },
         },
         "nacional_grande": {  # Vuelos nacionales de rutas populares
+            CategoriaAsientosEnum.Business: {
+                "filas": range(1, 3), 
+                "columnas": ["A", "B", "C", "D"], 
+                "precio_adicional": 50.00
+            },
             CategoriaAsientosEnum.Economica: {
-                "filas": range(1, 25), 
+                "filas": range(3, 25), 
                 "columnas": ["A", "B", "C", "D", "E", "F"], 
                 "precio_adicional": 0.00
             },
         },
         "nacional_pequeno": {  # Vuelos nacionales de rutas menos frecuentes
+            CategoriaAsientosEnum.Business: {
+                "filas": [1, 2], 
+                "columnas": ["A", "B", "C", "D"], 
+                "precio_adicional": 40.00
+            },
             CategoriaAsientosEnum.Economica: {
-                "filas": range(1, 16), 
+                "filas": range(3, 16), 
                 "columnas": ["A", "B", "C", "D"], 
                 "precio_adicional": 0.00
             },

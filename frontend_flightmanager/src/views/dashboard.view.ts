@@ -5,58 +5,94 @@ export const DashboardView = {
         const maxDate = new Date();
         maxDate.setDate(maxDate.getDate() + 30);
         const maxDateStr = maxDate.toISOString().split('T')[0];
-        
+
         return `
-        <div class="bg-white p-6 rounded-lg shadow-lg">
-            <h2 class="text-2xl font-bold mb-6 text-gray-800">Vuelos Disponibles</h2>
+        <div class="bg-white p-6 rounded-xl shadow-2xl border border-gray-200">
+            <div class="mb-6 pb-4 border-b-2 border-gray-200">
+                <h2 class="text-3xl font-bold text-gray-900">
+                    Vuelos Disponibles
+                </h2>
+                <p class="text-gray-600 mt-2 text-sm">Busca y reserva tu próximo vuelo de manera fácil y rápida</p>
+            </div>
             
             <!-- Formulario de filtros -->
             <form id="filter-flights-form" class="mb-6">
                 <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-4">
                     <div>
-                        <label for="origen" class="block text-sm font-medium text-gray-700">Origen (IATA)</label>
-                        <input type="text" id="origen" name="origen" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" placeholder="Ej: UIO">
-                        <p class="text-xs text-gray-500 mt-1">Opcional</p>
+                        <label for="origen" class="block text-sm font-semibold text-gray-800 mb-2">Origen (IATA)</label>
+                        <input type="text" id="origen" name="origen" 
+                            class="mt-1 block w-full px-4 py-3 text-base border-2 border-gray-300 rounded-lg shadow-sm 
+                                bg-white placeholder-gray-400 
+                                focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 
+                                hover:border-indigo-300 transition-all duration-200" 
+                            placeholder="Ej: UIO">
+                        <p class="text-xs text-gray-500 mt-1.5 italic">Opcional</p>
                     </div>
                     <div>
-                        <label for="destino" class="block text-sm font-medium text-gray-700">Destino (IATA)</label>
-                        <input type="text" id="destino" name="destino" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" placeholder="Ej: GYE">
-                        <p class="text-xs text-gray-500 mt-1">Opcional</p>
+                        <label for="destino" class="block text-sm font-semibold text-gray-800 mb-2">Destino (IATA)</label>
+                        <input type="text" id="destino" name="destino" 
+                            class="mt-1 block w-full px-4 py-3 text-base border-2 border-gray-300 rounded-lg shadow-sm 
+                                bg-white placeholder-gray-400 
+                                focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 
+                                hover:border-indigo-300 transition-all duration-200" 
+                            placeholder="Ej: GYE">
+                        <p class="text-xs text-gray-500 mt-1.5 italic">Opcional</p>
                     </div>
                     <div>
-                        <label for="fecha_desde" class="block text-sm font-medium text-gray-700">Desde</label>
-                        <input type="date" id="fecha_desde" name="fecha_desde" value="${today}" min="${today}" max="${maxDateStr}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                        <label for="fecha_desde" class="block text-sm font-semibold text-gray-800 mb-2">Desde</label>
+                        <input type="date" id="fecha_desde" name="fecha_desde" value="${today}" min="${today}" max="${maxDateStr}" 
+                            class="mt-1 block w-full px-4 py-3 text-base border-2 border-gray-300 rounded-lg shadow-sm 
+                                bg-white cursor-pointer
+                                focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 
+                                hover:border-indigo-300 transition-all duration-200">
                     </div>
                     <div>
-                        <label for="fecha_hasta" class="block text-sm font-medium text-gray-700">Hasta</label>
-                        <input type="date" id="fecha_hasta" name="fecha_hasta" value="${maxDateStr}" min="${today}" max="${maxDateStr}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                        <label for="fecha_hasta" class="block text-sm font-semibold text-gray-800 mb-2">Hasta</label>
+                        <input type="date" id="fecha_hasta" name="fecha_hasta" value="${maxDateStr}" min="${today}" max="${maxDateStr}" 
+                            class="mt-1 block w-full px-4 py-3 text-base border-2 border-gray-300 rounded-lg shadow-sm 
+                                bg-white cursor-pointer
+                                focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 
+                                hover:border-indigo-300 transition-all duration-200">
                     </div>
                     <div>
-                        <label for="aerolinea" class="block text-sm font-medium text-gray-700">Aerolínea</label>
-                        <input type="text" id="aerolinea" name="aerolinea" placeholder="Ej: LATAM" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                        <p class="text-xs text-gray-500 mt-1">Opcional</p>
+                        <label for="aerolinea" class="block text-sm font-semibold text-gray-800 mb-2">Aerolínea</label>
+                        <input type="text" id="aerolinea" name="aerolinea" 
+                            placeholder="Ej: LATAM" 
+                            class="mt-1 block w-full px-4 py-3 text-base border-2 border-gray-300 rounded-lg shadow-sm 
+                                bg-white placeholder-gray-400 
+                                focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 
+                                hover:border-indigo-300 transition-all duration-200">
+                        <p class="text-xs text-gray-500 mt-1.5 italic">Opcional</p>
                     </div>
                 </div>
 
                 <!-- Filtros avanzados -->
-                <div class="border rounded-lg p-4 bg-gray-50 mb-4">
-                    <button type="button" id="toggle-filters" class="flex items-center justify-between w-full text-left font-medium text-gray-700">
+                <div class="border-2 border-gray-200 rounded-lg p-4 bg-gradient-to-r from-gray-50 to-gray-100 mb-4 shadow-sm">
+                    <button type="button" id="toggle-filters" class="flex items-center justify-between w-full text-left font-semibold text-gray-800 hover:text-indigo-600 transition-colors">
                         <span>Opciones de Ordenamiento</span>
-                        <span id="filter-icon">▼</span>
+                        <span id="filter-icon" class="text-indigo-600 text-lg">▼</span>
                     </button>
                     <div id="advanced-filters" class="mt-4 hidden">
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                             <div>
-                                <label for="ordenar_por" class="block text-sm font-medium text-gray-700">Ordenar por</label>
-                                <select id="ordenar_por" name="ordenar_por" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                                <label for="ordenar_por" class="block text-sm font-semibold text-gray-800 mb-2">Ordenar por</label>
+                                <select id="ordenar_por" name="ordenar_por" 
+                                    class="mt-1 block w-full px-4 py-3 text-base border-2 border-gray-300 rounded-lg shadow-sm 
+                                        bg-white cursor-pointer
+                                        focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 
+                                        hover:border-indigo-300 transition-all duration-200">
                                     <option value="fecha">Fecha y Hora</option>
                                     <option value="precio">Precio (Menor a Mayor)</option>
-                                    <option value="aerolinea">Aerolinea (A-Z)</option>
+                                    <option value="aerolinea">Aerolínea (A-Z)</option>
                                 </select>
                             </div>
                             <div>
-                                <label for="resultados_por_pagina" class="block text-sm font-medium text-gray-700">Resultados por página</label>
-                                <select id="resultados_por_pagina" name="resultados_por_pagina" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                                <label for="resultados_por_pagina" class="block text-sm font-semibold text-gray-800 mb-2">Resultados por página</label>
+                                <select id="resultados_por_pagina" name="resultados_por_pagina" 
+                                    class="mt-1 block w-full px-4 py-3 text-base border-2 border-gray-300 rounded-lg shadow-sm 
+                                        bg-white cursor-pointer
+                                        focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 
+                                        hover:border-indigo-300 transition-all duration-200">
                                     <option value="10" selected>10</option>
                                     <option value="20">20</option>
                                     <option value="50">50</option>
@@ -67,24 +103,34 @@ export const DashboardView = {
                     </div>
                 </div>
 
-                <div class="flex gap-2">
-                    <button type="submit" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-lg text-lg transition-colors">
+                <div class="flex gap-3 mt-6">
+                    <button type="submit" 
+                        class="flex-1 bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 
+                            text-white font-bold py-4 px-6 rounded-xl text-lg 
+                            shadow-lg hover:shadow-xl 
+                            transition-all duration-200 
+                            focus:outline-none focus:ring-4 focus:ring-indigo-300">
                         Aplicar Filtros
                     </button>
-                    <button type="button" id="btn-reset-filters" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-3 px-4 rounded-lg transition-colors">
+                    <button type="button" id="btn-reset-filters" 
+                        class="bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 
+                            text-white font-bold py-4 px-6 rounded-xl 
+                            shadow-lg hover:shadow-xl 
+                            transition-all duration-200
+                            focus:outline-none focus:ring-4 focus:ring-gray-300">
                         Limpiar
                     </button>
                 </div>
             </form>
 
             <!-- Contador de resultados -->
-            <div id="results-info" class="mb-4 p-3 bg-blue-50 rounded-lg border border-blue-200">
-                <p class="text-blue-800 font-medium text-center">Cargando vuelos disponibles...</p>
+            <div id="results-info" class="mb-4 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border-2 border-blue-200 shadow-sm">
+                <p class="text-blue-800 font-semibold text-center text-base">Cargando vuelos disponibles...</p>
             </div>
 
             <!-- Contenedor de resultados con paginación -->
             <div id="flight-results-container" class="mt-6">
-                <p class="text-gray-500 text-center">Cargando vuelos...</p>
+                <p class="text-gray-500 text-center text-lg">Cargando vuelos...</p>
             </div>
 
             <!-- Paginación -->
@@ -160,7 +206,7 @@ export const DashboardView = {
         }
 
         let html = '';
-        
+
         // Botón anterior
         if (currentPage > 1) {
             html += `<button data-page="${currentPage - 1}" class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg font-medium">← Anterior</button>`;

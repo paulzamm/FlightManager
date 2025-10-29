@@ -50,6 +50,20 @@ async function apiFetch<T>(endpoint: string, method: HttpMethod, body: any = nul
 
         if (!response.ok) {
             const errorData = await response.json();
+            
+            // Manejo especial para errores de validación (422)
+            if (response.status === 422 && errorData.detail) {
+                // Si detail es un array de errores de validación
+                if (Array.isArray(errorData.detail)) {
+                    const errors = errorData.detail.map((err: any) => {
+                        const field = err.loc ? err.loc[err.loc.length - 1] : 'campo';
+                        return `${field}: ${err.msg}`;
+                    }).join(', ');
+                    throw new Error(`Error de validación: ${errors}`);
+                }
+                throw new Error(errorData.detail);
+            }
+            
             throw new Error(errorData.detail || 'Ocurrió un error en la petición.');
         }
 
