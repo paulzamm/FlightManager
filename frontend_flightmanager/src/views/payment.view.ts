@@ -61,7 +61,7 @@ export const PaymentView = {
             <div class="border-t border-b py-4 my-4">
                 <p class="text-2xl font-bold flex justify-between">
                 <span>Total a Pagar:</span>
-                <span class="text-green-600">$${reserva.monto_total.toFixed(2)}</span>
+                <span class="text-green-600">$${Number(reserva.monto_total).toFixed(2)}</span>
                 </p>
             </div>
             

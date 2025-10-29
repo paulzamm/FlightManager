@@ -35,7 +35,7 @@ export const ReservationView = {
             <div id="reservation-message" class="text-center text-red-500"></div>
             
             <div class="text-right border-t pt-4">
-                <p class="text-2xl font-bold">Total: $${booking.selectedSeats.reduce((acc, s) => acc + flight.tarifa_base + s.precio_adicional, 0).toFixed(2)}</p>
+                <p class="text-2xl font-bold">Total: $${booking.selectedSeats.reduce((acc, s) => acc + Number(flight.tarifa_base) + Number(s.precio_adicional), 0).toFixed(2)}</p>
                 <button type="submit" id="btn-confirm-reservation" class="mt-4 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg">
                 Confirmar Reserva
                 </button>

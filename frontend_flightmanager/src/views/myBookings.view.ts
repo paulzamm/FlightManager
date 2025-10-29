@@ -32,12 +32,12 @@ export const MyBookingsView = {
             <div>
             <p class="font-bold text-lg">Reserva #${r.id}</p>
             <p class="text-sm text-gray-600">Creada: ${format(new Date(r.fecha_reserva), "PPp", { locale: es })}</p>
-            <p class="text-sm text-gray-600">${r.pasajeros.length} pasajero(s)</p>
-            <p class="text-lg font-semibold text-green-600">Total: $${r.monto_total.toFixed(2)}</p>
+            <p class="text-sm text-gray-600">${r.pasajeros?.length || 0} pasajero(s)</p>
+            <p class="text-lg font-semibold text-green-600">Total: $${Number(r.monto_total).toFixed(2)}</p>
             </div>
             <div class="flex space-x-2">
-            <button class="btn-cancel bg-red-100 text-red-700 hover:bg-red-200" data-id="${r.id}">Cancelar</button>
-            <button class="btn-pay bg-green-500 text-white hover:bg-green-600" data-id="${r.id}">Pagar Ahora</button>
+            <button class="btn-cancel bg-red-100 text-red-700 hover:bg-red-200 py-2 px-4 rounded-lg" data-id="${r.id}">Cancelar</button>
+            <button class="btn-pay bg-green-500 text-white hover:bg-green-600 py-2 px-4 rounded-lg" data-id="${r.id}">Pagar Ahora</button>
             </div>
         </div>
     `).join('');
@@ -60,9 +60,16 @@ export const MyBookingsView = {
             <p class="text-sm text-gray-600">Comprado: ${format(new Date(b.fecha_compra), "PPp", { locale: es })}</p>
             <p class="text-sm text-gray-600">Reserva ID: #${b.id_reserva}</p>
             </div>
-            <button class="btn-view-ticket bg-blue-500 text-white hover:bg-blue-600" data-code="${b.codigo_confirmacion}">Ver Detalles</button>
+            <button class="btn-view-ticket bg-blue-500 text-white hover:bg-blue-600 py-2 px-4 rounded-lg" data-code="${b.codigo_confirmacion}">Ver Detalles</button>
         </div>
     `).join('');
-        // TODO: Bind click para ver detalles del billete
+        
+        // Bind click para ver detalles del billete
+        container.querySelectorAll('.btn-view-ticket').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const codigo = (e.currentTarget as HTMLElement).dataset.code;
+                window.location.hash = `/confirmation/${codigo}`;
+            });
+        });
     }
 };

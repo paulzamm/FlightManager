@@ -14,7 +14,7 @@ export const ConfirmationView = {
             <p class="text-lg text-gray-700">Tu código de confirmación es:</p>
             <p class="text-4xl font-mono font-bold text-indigo-600 my-2">${confirmation.codigo_confirmacion}</p>
             <p class="text-sm text-gray-500">Fecha de Compra: ${format(new Date(confirmation.fecha_compra), "PPpp", { locale: es })}</p>
-            <p class="text-lg text-gray-700 mt-2">Monto Total: <span class="font-bold text-green-600">$${confirmation.monto_total.toFixed(2)}</span></p>
+            <p class="text-lg text-gray-700 mt-2">Monto Total: <span class="font-bold text-green-600">$${Number(confirmation.monto_total).toFixed(2)}</span></p>
             </div>
             
             <p class="text-gray-600">Recibirás un email con los detalles (simulado). También puedes ver tus billetes en la sección "Mis Viajes".</p>

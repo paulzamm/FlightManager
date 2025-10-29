@@ -62,16 +62,51 @@ const routes: { [key: string]: { view: string, controller: (params: any, title: 
  * Parsea el hash de la URL (ej. /flight/123)
  */
 const parseRequestURL = () => {
-    const url = location.hash.slice(1).toLowerCase() || '/';
-    const r = url.split('/'); // [ '', 'flight', '123' ]
+    const originalUrl = location.hash.slice(1) || '/';
+    const url = originalUrl.toLowerCase(); // Para comparación de rutas
+    const originalParts = originalUrl.split('/'); // Mantiene mayúsculas para parámetros
+    const r = url.split('/'); // [ '', 'flight', '123' ] o [ '', 'book', 'payment', '3' ]
 
     const request = {
         resource: r[1],
-        id: r[2],
+        id: originalParts[2], // Mantener case original para IDs/códigos
         verb: r[3]
     };
 
-    // Genera una ruta genérica para el router: /flight/:id
+    // Intenta encontrar coincidencia exacta primero
+    if (routes[url]) {
+        return { parsedURL: url, params: request };
+    }
+
+    // Busca coincidencias con patrones dinámicos
+    for (const routePattern in routes) {
+        const routeParts = routePattern.split('/');
+        const urlParts = url.split('/');
+        const originalUrlParts = originalUrl.split('/');
+
+        if (routeParts.length !== urlParts.length) continue;
+
+        let match = true;
+        const params: any = { resource: r[1], id: originalParts[2], verb: r[3] };
+
+        for (let i = 0; i < routeParts.length; i++) {
+            if (routeParts[i].startsWith(':')) {
+                // Es un parámetro dinámico, guardamos su valor ORIGINAL (con mayúsculas)
+                const paramName = routeParts[i].slice(1);
+                params[paramName] = originalUrlParts[i];
+            } else if (routeParts[i] !== urlParts[i]) {
+                // No coincide
+                match = false;
+                break;
+            }
+        }
+
+        if (match) {
+            return { parsedURL: routePattern, params };
+        }
+    }
+
+    // Fallback: intenta el método antiguo
     const parsedURL = (request.resource ? '/' + request.resource : '/') +
         (request.id ? '/:id' : '') +
         (request.verb ? '/' + request.verb : '');

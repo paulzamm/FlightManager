@@ -124,9 +124,9 @@ const handlePurchase = async (reservaId: number) => {
 /**
  * Inicializa la página de Confirmación
  */
-export const initConfirmationPage = async (params: { id: string }, title: string) => {
+export const initConfirmationPage = async (params: any, title: string) => {
     try {
-        const codigo = params.id; // Aquí el 'id' es el código
+        const codigo = params.code || params.id; // Soporta ambos por compatibilidad
         const confirmacion = await paymentService.getConfirmation(codigo);
         LayoutView.renderPageContent(title, ConfirmationView.render(confirmacion));
     } catch (error: any) {
