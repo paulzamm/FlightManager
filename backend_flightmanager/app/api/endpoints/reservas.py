@@ -73,7 +73,7 @@ def create_reservation(
 
 # --- CONSULTAR RESERVAS ---
 
-@router.get("/me", response_model=List[reserva_schema.ReservaResponse])
+@router.get("/me", response_model=List[reserva_schema.ReservaDetail])
 def get_my_reservations(
     current_user: Usuario = Depends(get_current_user),
     db: Session = Depends(get_db),

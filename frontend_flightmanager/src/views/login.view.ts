@@ -13,32 +13,32 @@ export const LoginView = {
                 <div class="mb-4">
                     <label class="block text-gray-800 text-sm font-semibold mb-2" for="register-name">Nombre Completo</label>
                     <input class="w-full px-4 py-3 text-base border-2 border-gray-300 rounded-lg shadow-sm 
-                                  bg-white placeholder-gray-400 
-                                  focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 
-                                  hover:border-blue-300 transition-all duration-200" 
-                           id="register-name" type="text" placeholder="Nombre Apellido" required>
+                                bg-white placeholder-gray-400 
+                                focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 
+                                hover:border-blue-300 transition-all duration-200" 
+                        id="register-name" type="text" placeholder="Nombre Apellido" required>
                 </div>
                 <div class="mb-4">
                     <label class="block text-gray-800 text-sm font-semibold mb-2" for="register-email">Email</label>
                     <input class="w-full px-4 py-3 text-base border-2 border-gray-300 rounded-lg shadow-sm 
-                                  bg-white placeholder-gray-400 
-                                  focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 
-                                  hover:border-blue-300 transition-all duration-200" 
-                           id="register-email" type="email" placeholder="nombre.apellido@example.com" required>
+                                bg-white placeholder-gray-400 
+                                focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 
+                                hover:border-blue-300 transition-all duration-200" 
+                        id="register-email" type="email" placeholder="nombre.apellido@example.com" required>
                 </div>
                 <div class="mb-6">
                     <label class="block text-gray-800 text-sm font-semibold mb-2" for="register-password">Contraseña</label>
                     <input class="w-full px-4 py-3 text-base border-2 border-gray-300 rounded-lg shadow-sm 
-                                  bg-white placeholder-gray-400 
-                                  focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 
-                                  hover:border-blue-300 transition-all duration-200" 
-                           id="register-password" type="password" placeholder="Mínimo 6 caracteres" required>
+                                bg-white placeholder-gray-400 
+                                focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 
+                                hover:border-blue-300 transition-all duration-200" 
+                        id="register-password" type="password" placeholder="Tu contraseña" required>
                 </div>
                 <button class="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 
-                               text-white font-bold py-3 px-6 rounded-xl text-base 
-                               shadow-lg hover:shadow-xl transform hover:scale-[1.02] 
-                               transition-all duration-200 
-                               focus:outline-none focus:ring-4 focus:ring-blue-300" type="submit">
+                            text-white font-bold py-3 px-6 rounded-xl text-base 
+                            shadow-lg hover:shadow-xl transform hover:scale-[1.02] 
+                            transition-all duration-200 
+                            focus:outline-none focus:ring-4 focus:ring-blue-300" type="submit">
                     Crear Cuenta
                 </button>
                 </form>
@@ -52,24 +52,24 @@ export const LoginView = {
                 <div class="mb-4">
                     <label class="block text-gray-800 text-sm font-semibold mb-2" for="login-email">Email</label>
                     <input class="w-full px-4 py-3 text-base border-2 border-gray-300 rounded-lg shadow-sm 
-                                  bg-white placeholder-gray-400 
-                                  focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 
-                                  hover:border-green-300 transition-all duration-200" 
-                           id="login-email" type="email" placeholder="nombre.apellido@example.com" required>
+                                bg-white placeholder-gray-400 
+                                focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 
+                                hover:border-green-300 transition-all duration-200" 
+                        id="login-email" type="email" placeholder="nombre.apellido@example.com" required>
                 </div>
                 <div class="mb-6">
                     <label class="block text-gray-800 text-sm font-semibold mb-2" for="login-password">Contraseña</label>
                     <input class="w-full px-4 py-3 text-base border-2 border-gray-300 rounded-lg shadow-sm 
-                                  bg-white placeholder-gray-400 
-                                  focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 
-                                  hover:border-green-300 transition-all duration-200" 
-                           id="login-password" type="password" placeholder="Tu contraseña" required>
+                                bg-white placeholder-gray-400 
+                                focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 
+                                hover:border-green-300 transition-all duration-200" 
+                        id="login-password" type="password" placeholder="Tu contraseña" required>
                 </div>
                 <button class="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 
-                               text-white font-bold py-3 px-6 rounded-xl text-base 
-                               shadow-lg hover:shadow-xl transform hover:scale-[1.02] 
-                               transition-all duration-200 
-                               focus:outline-none focus:ring-4 focus:ring-green-300" type="submit">
+                            text-white font-bold py-3 px-6 rounded-xl text-base 
+                            shadow-lg hover:shadow-xl transform hover:scale-[1.02] 
+                            transition-all duration-200 
+                            focus:outline-none focus:ring-4 focus:ring-green-300" type="submit">
                     Entrar
                 </button>
                 </form>
