@@ -9,6 +9,58 @@ from app.crud import crud_flight, crud_asiento
 
 router = APIRouter()
 
+# --- LISTAR TODOS LOS VUELOS (PAGINADO) ---
+
+@router.get("/", response_model=List[flight_schema.FlightResult])
+def list_all_flights(
+    skip: int = Query(0, ge=0, description="Número de registros a saltar (paginación)"),
+    limit: int = Query(50, ge=1, le=100, description="Cantidad máxima de vuelos a devolver"),
+    origen: Optional[str] = Query(None, description="Filtrar por código IATA de origen"),
+    destino: Optional[str] = Query(None, description="Filtrar por código IATA de destino"),
+    fecha_desde: Optional[date] = Query(None, description="Filtrar vuelos desde esta fecha"),
+    fecha_hasta: Optional[date] = Query(None, description="Filtrar vuelos hasta esta fecha"),
+    aerolinea: Optional[str] = Query(None, description="Filtrar por código o nombre de aerolínea"),
+    ordenar_por: str = Query("fecha", description="Ordenar por: 'fecha', 'precio', 'aerolinea'"),
+    db: Session = Depends(get_db)
+):
+    """
+    **NUEVO:** Lista TODOS los vuelos disponibles con paginación y filtros opcionales.
+    
+    Permite al usuario ver todos los vuelos sin necesidad de especificar origen/destino.
+    
+    **Filtros opcionales:**
+    - origen: Código IATA del aeropuerto de origen
+    - destino: Código IATA del aeropuerto de destino
+    - fecha_desde/fecha_hasta: Rango de fechas
+    - aerolinea: Nombre o código de aerolínea
+    - ordenar_por: 'fecha', 'precio', 'aerolinea'
+    
+    **Paginación:**
+    - skip: Saltar N registros (para páginas)
+    - limit: Máximo de resultados (1-100)
+    """
+    # Obtener todos los vuelos con filtros
+    vuelos = crud_flight.get_all_flights_filtered(
+        db,
+        skip=skip,
+        limit=limit,
+        origen_iata=origen.upper() if origen else None,
+        destino_iata=destino.upper() if destino else None,
+        fecha_desde=fecha_desde,
+        fecha_hasta=fecha_hasta,
+        aerolinea=aerolinea
+    )
+    
+    # Ordenar según preferencia
+    if ordenar_por == "precio":
+        vuelos = sorted(vuelos, key=lambda v: v.tarifa_base)
+    elif ordenar_por == "aerolinea":
+        vuelos = sorted(vuelos, key=lambda v: v.aerolinea.nombre)
+    else:  # Por defecto por fecha/hora
+        vuelos = sorted(vuelos, key=lambda v: v.hora_salida)
+    
+    return vuelos
+
 # --- BÚSQUEDA DE VUELOS ---
 
 @router.get("/search", response_model=List[flight_schema.FlightResult])

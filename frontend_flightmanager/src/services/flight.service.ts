@@ -3,7 +3,33 @@ import type { FlightResult, AsientoResponse } from '../models/types';
 
 export const flightService = {
     /**
-     * Búsqueda simple de vuelos
+     * Lista TODOS los vuelos con paginación y filtros opcionales
+     */
+    listAllFlights: (params: {
+        skip?: number,
+        limit?: number,
+        origen?: string,
+        destino?: string,
+        fecha_desde?: string,
+        fecha_hasta?: string,
+        aerolinea?: string,
+        ordenar_por?: 'fecha' | 'precio' | 'aerolinea'
+    }): Promise<FlightResult[]> => {
+        const queryParams = new URLSearchParams();
+        if (params.skip !== undefined) queryParams.append('skip', params.skip.toString());
+        if (params.limit !== undefined) queryParams.append('limit', params.limit.toString());
+        if (params.origen) queryParams.append('origen', params.origen);
+        if (params.destino) queryParams.append('destino', params.destino);
+        if (params.fecha_desde) queryParams.append('fecha_desde', params.fecha_desde);
+        if (params.fecha_hasta) queryParams.append('fecha_hasta', params.fecha_hasta);
+        if (params.aerolinea) queryParams.append('aerolinea', params.aerolinea);
+        if (params.ordenar_por) queryParams.append('ordenar_por', params.ordenar_por);
+        
+        return api.get<FlightResult[]>(`/flights/?${queryParams.toString()}`);
+    },
+
+    /**
+     * Búsqueda simple de vuelos (ordenado por horario)
      */
     searchFlights: (origen: string, destino: string, fecha: string): Promise<FlightResult[]> => {
         const params = new URLSearchParams({ origen, destino, fecha });
@@ -11,7 +37,15 @@ export const flightService = {
     },
 
     /**
-     * Búsqueda avanzada
+     * Búsqueda ordenada por precio
+     */
+    searchByPrice: (origen: string, destino: string, fecha: string): Promise<FlightResult[]> => {
+        const params = new URLSearchParams({ origen, destino, fecha });
+        return api.get<FlightResult[]>(`/flights/search/by-price?${params.toString()}`);
+    },
+
+    /**
+     * Búsqueda avanzada con múltiples filtros
      */
     searchFlightsAdvanced: (params: {
         origen: string,

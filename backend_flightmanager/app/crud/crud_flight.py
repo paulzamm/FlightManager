@@ -1,10 +1,66 @@
 from sqlalchemy.orm import Session, joinedload, aliased
 from sqlalchemy.sql.expression import func
+from sqlalchemy import or_
 from app.database import Vuelo, Aeropuerto, Aerolinea, Asiento, EstadoVueloEnum, EstadoAsientoEnum
 from datetime import date, datetime
 from typing import List, Optional
 
 # --- BÚSQUEDA Y CONSULTAS ---
+
+def get_all_flights_filtered(
+    db: Session,
+    skip: int = 0,
+    limit: int = 100,
+    origen_iata: Optional[str] = None,
+    destino_iata: Optional[str] = None,
+    fecha_desde: Optional[date] = None,
+    fecha_hasta: Optional[date] = None,
+    aerolinea: Optional[str] = None
+) -> List[Vuelo]:
+    """
+    Obtiene TODOS los vuelos con filtros opcionales y paginación.
+    Ideal para la vista principal de exploración de vuelos.
+    """
+    AeropuertoOrigen = aliased(Aeropuerto)
+    AeropuertoDestino = aliased(Aeropuerto)
+    
+    query = db.query(Vuelo)\
+        .join(AeropuertoOrigen, Vuelo.id_aeropuerto_origen == AeropuertoOrigen.id)\
+        .join(AeropuertoDestino, Vuelo.id_aeropuerto_destino == AeropuertoDestino.id)\
+        .join(Aerolinea, Vuelo.id_aerolinea == Aerolinea.id)\
+        .options(
+            joinedload(Vuelo.origen),
+            joinedload(Vuelo.destino),
+            joinedload(Vuelo.aerolinea)
+        )\
+        .filter(Vuelo.estado != EstadoVueloEnum.Cancelado)
+    
+    # Aplicar filtros opcionales
+    if origen_iata:
+        query = query.filter(AeropuertoOrigen.codigo_iata == origen_iata)
+    
+    if destino_iata:
+        query = query.filter(AeropuertoDestino.codigo_iata == destino_iata)
+    
+    if fecha_desde:
+        query = query.filter(func.date(Vuelo.hora_salida) >= fecha_desde)
+    
+    if fecha_hasta:
+        query = query.filter(func.date(Vuelo.hora_salida) <= fecha_hasta)
+    
+    if aerolinea:
+        # Buscar por código O nombre de aerolínea
+        query = query.filter(
+            or_(
+                Aerolinea.codigo_iata.ilike(f"%{aerolinea}%"),
+                Aerolinea.nombre.ilike(f"%{aerolinea}%")
+            )
+        )
+    
+    return query.order_by(Vuelo.hora_salida)\
+        .offset(skip)\
+        .limit(limit)\
+        .all()
 
 def search_flights(db: Session, origen_iata: str, destino_iata: str, fecha: date) -> List[Vuelo]:
     """
